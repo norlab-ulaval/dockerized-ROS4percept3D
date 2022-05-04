@@ -41,6 +41,7 @@ RUN apt-get update \
 
 # .... Install percept3D libraries dependencies ........................................................................
 # . . Install boost. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+# https://www.boost.org/doc/libs/1_79_0/more/getting_started/unix-variants.html
 RUN apt-get update \
     && apt-get install --assume-yes --no-install-recommends \
         libboost-all-dev \
@@ -54,6 +55,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # . . Install libnabo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ..
+# https://github.com/ethz-asl/libnabo
 RUN apt-get update \
     && apt-get install --assume-yes --no-install-recommends \
         python-numpy \
@@ -64,7 +66,8 @@ RUN apt-get update \
 WORKDIR "/usr/local"
 RUN git clone https://github.com/ethz-asl/libnabo.git \
     && cd libnabo \
-#    && git checkout 3cab7eed92bd5d4aed997347b8c8a2692a83a532 \
+    && git checkout 1.0.7 \
+    #    && git checkout 3cab7eed92bd5d4aed997347b8c8a2692a83a532 \
     && mkdir build && cd build \
 #    && cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo "${PERCEPT_LIBRARIES}/libnabo" \
     && cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo "/usr/local/libnabo" \
@@ -77,6 +80,7 @@ RUN git clone https://github.com/ethz-asl/libnabo.git \
 RUN pwd && tree -L 3
 
 # . . Install percept3D libraries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+# https://github.com/ethz-asl/libpointmatcher/tree/master
 WORKDIR "${PERCEPT_LIBRARIES}"
 
 #RUN apt-get update \
@@ -87,6 +91,8 @@ WORKDIR "${PERCEPT_LIBRARIES}"
 RUN git clone https://github.com/ethz-asl/libpointmatcher.git \
     && cd libpointmatcher \
 #    && git checkout 76f99fce0fe69e6384102a0343fdf8d262626e1f \
+    && git checkout 1.3.1 \
+#    && git checkout devel/maplab \
     && mkdir build && cd build \
 #    && cmake -D CMAKE_BUILD_TYPE=Release .. -D BUILD_TESTS=TRUE ${SRC_DIR} \
     && cmake -D CMAKE_BUILD_TYPE=Release \
