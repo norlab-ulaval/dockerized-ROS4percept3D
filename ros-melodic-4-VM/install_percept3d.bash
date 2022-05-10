@@ -1,4 +1,4 @@
-
+#!/bin/bash
 # /// ROS-4-Percept3D course software install //////////////////////////////////////////////////////////////////////////
 # Maintainer: luc.coupal.1@ulaval.ca
 
@@ -10,7 +10,7 @@ ROS_DISTRO='melodic'
 DS_ROS_ROOT="/opt/ros/${ROS_DISTRO}"
 
 # skip GUI dialog by setting everything to default
-DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND=noninteractive
 ROS_DEV_WORKSPACE="${HOME}/catkin_ws"
 PERCEPT_LIBRARIES="${HOME}/opt/percep3d_libraries"
 
@@ -175,8 +175,9 @@ git clone https://github.com/norlab-ulaval/percep3d_turtle_exercises.git
 
 # . . Add archived files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 #cd "${HOME}"
-mv "${HOME}/beginner_tutorials.zip" "${ROS_DEV_WORKSPACE}/src"
-mv "${HOME}/percep3d_mapping.zip" "${ROS_DEV_WORKSPACE}/src"
+#cd "/"
+mv "/beginner_tutorials.zip" "${ROS_DEV_WORKSPACE}/src"
+mv "/percep3d_mapping.zip" "${ROS_DEV_WORKSPACE}/src"
 
 #COPY beginner_tutorials.zip "${ROS_DEV_WORKSPACE}/src"
 #COPY percep3d_mapping.zip "${ROS_DEV_WORKSPACE}/src"
