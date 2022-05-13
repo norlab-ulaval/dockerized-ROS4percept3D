@@ -15,6 +15,7 @@ Maintainer: luc.coupal.1@ulaval.ca
   - norlab_icp_mapper
   - norlab_icp_mapper_ros
   - percep3d_turtle_exercises
+- Fetch ros bag `husky_short_demo.bag`
 - Build a catkin workspace 
 - A configured ssh server for remote VM access
 
