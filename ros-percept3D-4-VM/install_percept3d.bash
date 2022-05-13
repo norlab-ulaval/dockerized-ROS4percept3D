@@ -2,8 +2,17 @@
 # /// ROS-4-Percept3D course software install //////////////////////////////////////////////////////////////////////////
 # Maintainer: luc.coupal.1@ulaval.ca
 
-# Note | docker pull --platform linux/arm64 ubuntu:20.04
+# Script usage:
+#   1. In the VM, execute the following line in a terminal
+#       $ cd /opt
+#       $ sudo apt-get update && sudo apt-get install --assume-yes git
+#       $ sudo git clone https://github.com/norlab-ulaval/dockerized-ROS4percept3D.git
+#       $ cd dockerized-ROS4percept3D/ros-percept3D-4-VM
+#       $ sudo bash install_percept3d.bash
+#   2. logout current user and login with user `student` pass `percept3d`
+#   Note: be advise that VM root password is now also `percept3d`
 
+# Note or unit test | docker pull --platform linux/arm64 ubuntu:20.04
 
 ROS_PKG='desktop_full'
 #ROS_DISTRO='melodic'
@@ -17,7 +26,7 @@ PASSWORD='percept3d'
 D4P3D_USER_HOME="/home/${D4P3D_USER}"
 
 # $ sudo useradd -s /path/to/shell -d /home/{dirname} -m -G {secondary-group} {username}
-sudo useradd -d "${D4P3D_USER_HOME}" -m "${D4P3D_USER}" \
+sudo useradd -s /bin/bash -d "${D4P3D_USER_HOME}" -m "${D4P3D_USER}" \
   && yes "${PASSWORD}" | passwd "${D4P3D_USER}"
 # Add sudo group to D4P3D_USER
 sudo usermod -a -G sudo "${D4P3D_USER}"
@@ -34,11 +43,12 @@ sudo echo "root:"${PASSWORD}"" | chpasswd
 PERCEPT_LIBRARIES="/opt/percep3d_libraries"
 ROS_DEV_WORKSPACE="${D4P3D_USER_HOME}/catkin_ws"
 
-sudo mkdir -p "${DS_ROS_ROOT}"
-sudo mkdir -p "${ROS_DEV_WORKSPACE}/src"
-sudo mkdir -p "${PERCEPT_LIBRARIES}"
-sudo mkdir -p "${D4P3D_USER_HOME}/percep3d_data"
+mkdir -p "${DS_ROS_ROOT}"
+mkdir -p "${ROS_DEV_WORKSPACE}/src"
+mkdir -p "${PERCEPT_LIBRARIES}"
+mkdir -p "${D4P3D_USER_HOME}/percep3d_data"
 
+chmod +x /ros_entrypoint.bash
 
 # . . Add archived files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 sudo apt-get update \
@@ -280,11 +290,6 @@ sudo rosdep fix-permissions
 cd "${ROS_DEV_WORKSPACE}"
 sudo apt-get update \
     && rosdep install --from-paths ./src --ignore-packages-from-source --rosdistro=${ROS_DISTRO} -y
-
-#    && cd ${DS_DEV_WORKSPACE} \
-#    && sudo apt-get update \
-#    && rosdep install --from-path src --ignore-src --default-yes \
-#    && sudo rm -rf /var/lib/apt/lists/*
 
 
 source "${DS_ROS_ROOT}/setup.bash"
