@@ -49,7 +49,6 @@ mkdir -p "${ROS_DEV_WORKSPACE}/src"
 mkdir -p "${PERCEPT_LIBRARIES}"
 mkdir -p "${D4P3D_USER_HOME}/percep3d_data"
 
-chmod +x /ros_entrypoint.bash
 
 # . . Add archived files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 sudo apt-get update \
@@ -392,14 +391,16 @@ source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 #    && ninja
 
 
+# ==== Final step =============================================================================================
 # Make sure that you have your environment properly setup. A good way to check is to ensure that environment variables
 # like ROS_ROOT and ROS_PACKAGE_PATH are set:
 #   $ printenv | grep ROS
 cd "${ROS_DEV_WORKSPACE}"
 
+# Change directory ownership
+sudo chown -R student:student "${D4P3D_USER_HOME}/percep3d_data"
+sudo chown -R student:student "${ROS_DEV_WORKSPACE}"
 
-
-# ==== Final prompt msg =============================================================================================
 echo -e "To connect remotely to the container:
     $ ssh -p ${VM_SSH_SERVER_PORT} ${D4P3D_USER}@$(hostname -I | awk '{print $1}')
     $ sftp -P ${VM_SSH_SERVER_PORT} openssh-$(hostname -I | awk '{print $1}')
