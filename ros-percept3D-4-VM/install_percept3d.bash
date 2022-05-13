@@ -120,7 +120,6 @@ sudo apt-get update \
 # (Priority) ToDo:validate >> SSH bloc ↓↓
 # ssh port, remaped from default 22 to 2222
 VM_SSH_SERVER_PORT=2222
-DS_PYCHARM_DEV_SERVER_PORT=${VM_SSH_SERVER_PORT}
 
 # Inspired from https://austinmorlan.com/posts/docker_clion_development/
 ( \
@@ -133,14 +132,16 @@ DS_PYCHARM_DEV_SERVER_PORT=${VM_SSH_SERVER_PORT}
   && mkdir /run/sshd
 
 # SSH login fix. Otherwise user is kicked off after login
-sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+#sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 # Run ssh on logging, only if not running yet
+# Note: check that ssh is running `ps -aux | grep ssh`
 #/usr/sbin/sshd -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server
+#echo "if [ ! "$(ps -elf | grep -v grep | grep /usr/sbin/sshd)" ];"; \
 ( \
-echo "if [ ! "$(ps -elf | grep -v grep | grep /usr/sbin/sshd)" ];"; \
-echo "  then sudo /usr/sbin/sshd -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server;"; \
-echo "fi"; \
+    echo "if [ ! '$(ps -elf | grep -v grep | grep /usr/sbin/sshd)' ];"; \
+    echo "  then sudo /usr/sbin/sshd -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server;"; \
+    echo "fi"; \
 ) >> ~/.bashrc
 
 # Note: The command for starting the ssh server are at the end of this script
@@ -415,19 +416,19 @@ cd "${ROS_DEV_WORKSPACE}"
 
 
 # ==== Starting ssh server =============================================================================================
-echo
-echo -e "Starting container \033[1;37mssh server on port ${D4P3D_SSH_SERVER_PORT}\033[0m with \033[1;37muser ${D4P3D_USER}\033[0m (default pass: ${PASSWORD})"
-# sshd flag
-# -D : sshd will not detach and does not become a daemon. This allows easy monitoring of sshd.
-# -e : sshd will send the output to the standard error instead of the system log.
-# -f : config_file
-#/usr/sbin/sshd -D -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server
-/usr/sbin/sshd -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server
+#echo
+#echo -e "Starting container \033[1;37mssh server on port ${VM_SSH_SERVER_PORT}\033[0m with \033[1;37muser ${D4P3D_USER}\033[0m (default pass: ${PASSWORD})"
+## sshd flag
+## -D : sshd will not detach and does not become a daemon. This allows easy monitoring of sshd.
+## -e : sshd will send the output to the standard error instead of the system log.
+## -f : config_file
+##/usr/sbin/sshd -D -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server
+#/usr/sbin/sshd -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server
 
 echo -e "To connect remotely to the container:
-    $ ssh -p ${D4P3D_SSH_SERVER_PORT} ${D4P3D_USER}@$(hostname -I | awk '{print $1}')
-    $ sftp -P ${D4P3D_SSH_SERVER_PORT} openssh-$(hostname -I | awk '{print $1}')
-    $ scp -P ${D4P3D_SSH_SERVER_PORT} /path/to/foo ${D4P3D_USER}@$(hostname -I | awk '{print $1}'):/dest/
+    $ ssh -p ${VM_SSH_SERVER_PORT} ${D4P3D_USER}@$(hostname -I | awk '{print $1}')
+    $ sftp -P ${VM_SSH_SERVER_PORT} openssh-$(hostname -I | awk '{print $1}')
+    $ scp -P ${VM_SSH_SERVER_PORT} /path/to/foo ${D4P3D_USER}@$(hostname -I | awk '{print $1}'):/dest/
 "
 
 
