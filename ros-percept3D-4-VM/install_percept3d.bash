@@ -110,7 +110,8 @@ sudo apt-get update \
 
 
 # ...Setup ssh server...................................................................................................
-# (Priority) ToDo:validate >> SSH bloc ↓↓
+# Note: check that ssh is running `ps -aux | grep ssh`
+
 # ssh port, remaped from default 22 to 2222
 VM_SSH_SERVER_PORT=2222
 
@@ -123,13 +124,10 @@ VM_SSH_SERVER_PORT=2222
   ) >> /etc/ssh/sshd_config \
   && mkdir /run/sshd
 
-#    echo "Subsystem sftp /usr/lib/openssh/sftp-server"; \
-
 sudo service ssh --full-restart
 
 
 
-# (CRITICAL) ToDo:on task end >> uncomment from here
 # .... Install percept3D libraries dependencies ........................................................................
 if [[ ${ROS_DISTRO} == 'melodic' ]]; then
     sudo apt-get update \
