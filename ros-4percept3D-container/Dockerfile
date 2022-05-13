@@ -386,16 +386,15 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ##    && cd ../paraview_build \
 ##    && cmake -GNinja -DPARAVIEW_USE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DVTK_SMP_IMPLEMENTATION_TYPE=TBB -DCMAKE_BUILD_TYPE=Release ../paraview \
 ##    && ninja
-#
-#
-## Make sure that you have your environment properly setup. A good way to check is to ensure that environment variables
-## like ROS_ROOT and ROS_PACKAGE_PATH are set:
-##   $ printenv | grep ROS
-#WORKDIR "${ROS_DEV_WORKSPACE}"
-#CMD [ "bash" ]
-#
-#
-## ///////////////////////////////////////////////////////////////////////////////////////// norlab-mppi/dependencies ///
-#
-#
-#
+
+
+
+# ==== Final step ======================================================================================================
+# Make sure that you have your environment properly setup. A good way to check is to ensure that environment variables
+# like ROS_ROOT and ROS_PACKAGE_PATH are set:
+#   $ printenv | grep ROS
+WORKDIR "${ROS_DEV_WORKSPACE}"
+ENTRYPOINT [ "./entrypoint.bash" ]
+CMD [ "bash" ]
+# ///////////////////////////////////////////////////////////////////////////////////////// norlab-mppi/dependencies ///
+

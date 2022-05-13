@@ -391,7 +391,7 @@ source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 #    && ninja
 
 
-# ==== Final step =============================================================================================
+# ==== Final step ======================================================================================================
 # Make sure that you have your environment properly setup. A good way to check is to ensure that environment variables
 # like ROS_ROOT and ROS_PACKAGE_PATH are set:
 #   $ printenv | grep ROS
