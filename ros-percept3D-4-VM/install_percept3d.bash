@@ -10,18 +10,37 @@ ROS_PKG='desktop_full'
 ROS_DISTRO='noetic'
 DS_ROS_ROOT="/opt/ros/${ROS_DISTRO}"
 
-# skip GUI dialog by setting everything to default
-export DEBIAN_FRONTEND=noninteractive
-ROS_DEV_WORKSPACE="${HOME}/catkin_ws"
-PERCEPT_LIBRARIES="${HOME}/opt/percep3d_libraries"
 
+# ... Add new user .....................................................................................................
+D4P3D_USER='student'
+PASSWORD='percept3d'
+D4P3D_USER_HOME="/home/${D4P3D_USER}"
+
+# $ sudo useradd -s /path/to/shell -d /home/{dirname} -m -G {secondary-group} {username}
+sudo useradd -d "${D4P3D_USER_HOME}" -m "${D4P3D_USER}" \
+  && yes "${PASSWORD}" | passwd "${D4P3D_USER}"
+# Add sudo group to D4P3D_USER
+sudo usermod -a -G sudo "${D4P3D_USER}"
+# Note: Add the 'video' groups to new user as it's required for GPU access.
+# (not a problem on norlab-og but mandatory on Jetson device)
+# Ref: https://forums.developer.nvidia.com/t/how-to-properly-create-new-users/68660/2
+
+# ... root config ......................................................................................................
+# user:newpassword
+sudo echo "root:"${PASSWORD}"" | chpasswd
+
+
+# .... Create required dir structure ...................................................................................
+PERCEPT_LIBRARIES="/opt/percep3d_libraries"
+ROS_DEV_WORKSPACE="${D4P3D_USER_HOME}/catkin_ws"
 
 sudo mkdir -p "${DS_ROS_ROOT}"
 sudo mkdir -p "${ROS_DEV_WORKSPACE}/src"
 sudo mkdir -p "${PERCEPT_LIBRARIES}"
+sudo mkdir -p "${D4P3D_USER_HOME}/percep3d_data"
+
 
 # . . Add archived files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
 sudo apt-get update \
     && sudo apt-get install --assume-yes \
         apt-utils \
@@ -38,7 +57,17 @@ cd "${ROS_DEV_WORKSPACE}/src"
 unzip beginner_tutorials.zip
 unzip percep3d_mapping.zip
 
+
+# (NICE TO HAVE) ToDo: add fetch ros bag step (zip file is to big for GitHub)
+#wget https://ulavaldti-my.sharepoint.com/:u:/g/personal/dobar35_ulaval_ca/EcdX-qoboOBGnydmV8pnxAwBUw1bzFH_ACiCbIXKU2alCg?e=MRRoAb
+# husky_short_demo.zip
+
+
+# ==== Install tools ===================================================================================================
 cd "${ROS_DEV_WORKSPACE}"
+
+# skip GUI dialog by setting everything to default
+export DEBIAN_FRONTEND=noninteractive
 
 # ... install development utilities .....................................................................
 sudo apt-get update \
@@ -56,10 +85,41 @@ sudo apt-get update \
         vim \
         tree \
         bash-completion \
+        net-tools \
     && sudo rm -rf /var/lib/apt/lists/*
 
 
+# ===Service: ssh server================================================================================================
 
+# install development utilities
+sudo apt-get update \
+    && sudo apt-get install --assume-yes --no-install-recommends \
+        openssh-server \
+    && sudo apt-get clean \
+    && sudo rm -rf /var/lib/apt/lists/*
+
+
+# ...Setup ssh server...................................................................................................
+# (Priority) ToDo:validate >> SSH bloc ↓↓
+# ssh port, remaped from default 22 to 2222
+VM_SSH_SERVER_PORT=2222
+DS_PYCHARM_DEV_SERVER_PORT=${VM_SSH_SERVER_PORT}
+
+# Inspired from https://austinmorlan.com/posts/docker_clion_development/
+( \
+    echo "LogLevel DEBUG2"; \
+    echo "PermitRootLogin yes"; \
+    echo "PasswordAuthentication yes"; \
+    echo "Port ${VM_SSH_SERVER_PORT}"; \
+    echo "Subsystem sftp /usr/lib/openssh/sftp-server"; \
+  ) > /etc/ssh/sshd_config_dockerized_snow_openssh_server \
+  && mkdir /run/sshd
+
+# SSH login fix. Otherwise user is kicked off after login
+sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+
+# .... Install percept3D libraries dependencies ........................................................................
 if [[ ${ROS_DISTRO} == 'melodic' ]]; then
     sudo apt-get update \
         && sudo apt-get install --assume-yes \
@@ -77,7 +137,6 @@ else
 fi
 
 
-# .... Install percept3D libraries dependencies ........................................................................
 
 # . . Install boost. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 # https://www.boost.org/doc/libs/1_79_0/more/getting_started/unix-variants.html
@@ -234,6 +293,9 @@ source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 
 echo "source ${DS_ROS_ROOT}/setup.bash" >> ~/.bashrc
 echo "source ${ROS_DEV_WORKSPACE}/devel/setup.bash" >> ~/.bashrc
+
+echo "source ${DS_ROS_ROOT}/setup.bash" >> "${D4P3D_USER_HOME}/.bashrc"
+echo "source ${ROS_DEV_WORKSPACE}/devel/setup.bash" >> "${D4P3D_USER_HOME}/.bashrc"
 # Make sure your workspace is properly overlayed by the setup script by checking the ROS_PACKAGE_PATH environment
 # variable. It should include the directory you're in:
 #   $ echo $ROS_PACKAGE_PATH

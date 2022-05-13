@@ -15,11 +15,37 @@ ARG ROS_DISTRO=noetic
 ENV ROS_DISTRO={ROS_DISTRO}
 ENV DS_ROS_ROOT="/opt/ros/${ROS_DISTRO}"
 
+
+# ...Add new user.......................................................................................................
+ARG NEW_USER=student
+ENV D4P3D_USER=${NEW_USER}
+ARG PASSWORD=percept3d
+ENV D4P3D_USER_HOME="/home/${D4P3D_USER}"
+
+RUN useradd -d "${D4P3D_USER_HOME}" -m "${D4P3D_USER}" \
+  && yes "${PASSWORD}" | passwd "${D4P3D_USER}"
+# Add the 'video' groups to new user as it's required for GPU access.
+# (not a problem on norlab-og but mandatory on Jetson device)
+# Ref: https://forums.developer.nvidia.com/t/how-to-properly-create-new-users/68660/2
+RUN usermod -a -G sudo ${D4P3D_USER}
+
+# ...root config........................................................................................................
+# user:newpassword
+RUN echo "root:${PASSWORD}" | chpasswd
+
+# (Optional) Change default shell for new user
+#RUN usermod -s /bin/bash ${D4P3D_USER}
+
+# .... Create required dir structure ...................................................................................
+ENV PERCEPT_LIBRARIES="/opt/percep3d_libraries"
+ENV ROS_DEV_WORKSPACE="${D4P3D_USER_HOME}/catkin_ws"
+
+RUN mkdir -p "${D4P3D_USER_HOME}/percep3d_data"
+WORKDIR "${ROS_DEV_WORKSPACE}"
+
+# ==== Install tools ===================================================================================================
 # skip GUI dialog by setting everything to default
 ARG DEBIAN_FRONTEND=noninteractive
-ENV ROS_DEV_WORKSPACE="${HOME}/catkin_ws"
-ENV PERCEPT_LIBRARIES="${HOME}/opt/percep3d_libraries"
-WORKDIR "${ROS_DEV_WORKSPACE}"
 
 # install development utilities
 RUN apt-get update \
@@ -268,6 +294,38 @@ RUN apt-get update \
 ## Already install in ROS desktop full install
 #RUN apt-get update \
 #    && apt-get install -y rviz
+
+
+FROM percept3d-ROS AS percept3d-ROS-ssh
+# ===Service: ssh server================================================================================================
+
+# install development utilities
+RUN apt-get update \
+    && apt-get install --assume-yes --no-install-recommends \
+        openssh-server \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+
+# ...Setup ssh server...................................................................................................
+# (Priority) ToDo:validate >> SSH bloc ↓↓
+# ssh port, remaped from default 22 to 2222
+ARG VM_SSH_SERVER_PORT=2222
+ENV DS_PYCHARM_DEV_SERVER_PORT=${VM_SSH_SERVER_PORT}
+EXPOSE ${VM_SSH_SERVER_PORT}
+
+# Inspired from https://austinmorlan.com/posts/docker_clion_development/
+RUN ( \
+    echo "LogLevel DEBUG2"; \
+    echo "PermitRootLogin yes"; \
+    echo "PasswordAuthentication yes"; \
+    echo "Port ${VM_SSH_SERVER_PORT}"; \
+    echo "Subsystem sftp /usr/lib/openssh/sftp-server"; \
+  ) > /etc/ssh/sshd_config_dockerized_snow_openssh_server \
+  && mkdir /run/sshd
+
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 
 ### .... install Paraview ................................................................................................
