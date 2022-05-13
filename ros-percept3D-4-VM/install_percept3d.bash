@@ -123,11 +123,22 @@ DS_PYCHARM_DEV_SERVER_PORT=${VM_SSH_SERVER_PORT}
     echo "PasswordAuthentication yes"; \
     echo "Port ${VM_SSH_SERVER_PORT}"; \
     echo "Subsystem sftp /usr/lib/openssh/sftp-server"; \
-  ) > /etc/ssh/sshd_config_dockerized_snow_openssh_server \
+  ) > /etc/ssh/sshd_config_ros4percept3d_openssh_server \
   && mkdir /run/sshd
 
 # SSH login fix. Otherwise user is kicked off after login
 sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+# Run ssh on logging, only if not running yet
+#/usr/sbin/sshd -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server
+( \
+echo "if [ ! "$(ps -elf | grep -v grep | grep /usr/sbin/sshd)" ];"; \
+echo "  then sudo /usr/sbin/sshd -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server;"; \
+echo "fi"; \
+) >> ~/.bashrc
+
+# Note: The command for starting the ssh server are at the end of this script
+
 
 
 # .... Install percept3D libraries dependencies ........................................................................
@@ -395,6 +406,23 @@ source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 # like ROS_ROOT and ROS_PACKAGE_PATH are set:
 #   $ printenv | grep ROS
 cd "${ROS_DEV_WORKSPACE}"
+
+
+# ==== Starting ssh server =============================================================================================
+echo
+echo -e "Starting container \033[1;37mssh server on port ${D4P3D_SSH_SERVER_PORT}\033[0m with \033[1;37muser ${D4P3D_USER}\033[0m (default pass: ${PASSWORD})"
+# sshd flag
+# -D : sshd will not detach and does not become a daemon. This allows easy monitoring of sshd.
+# -e : sshd will send the output to the standard error instead of the system log.
+# -f : config_file
+#/usr/sbin/sshd -D -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server
+/usr/sbin/sshd -e -f /etc/ssh/sshd_config_ros4percept3d_openssh_server
+
+echo -e "To connect remotely to the container:
+    $ ssh -p ${D4P3D_SSH_SERVER_PORT} ${D4P3D_USER}@$(hostname -I | awk '{print $1}')
+    $ sftp -P ${D4P3D_SSH_SERVER_PORT} openssh-$(hostname -I | awk '{print $1}')
+    $ scp -P ${D4P3D_SSH_SERVER_PORT} /path/to/foo ${D4P3D_USER}@$(hostname -I | awk '{print $1}'):/dest/
+"
 
 
 

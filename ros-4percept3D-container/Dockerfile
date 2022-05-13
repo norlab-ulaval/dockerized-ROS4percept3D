@@ -310,18 +310,18 @@ RUN apt-get update \
 # ...Setup ssh server...................................................................................................
 # (Priority) ToDo:validate >> SSH bloc ↓↓
 # ssh port, remaped from default 22 to 2222
-ARG VM_SSH_SERVER_PORT=2222
-ENV DS_PYCHARM_DEV_SERVER_PORT=${VM_SSH_SERVER_PORT}
-EXPOSE ${VM_SSH_SERVER_PORT}
+ARG SSH_SERVER_PORT=2222
+ENV D4P3D_SSH_SERVER_PORT=${SSH_SERVER_PORT}
+EXPOSE ${SSH_SERVER_PORT}
 
 # Inspired from https://austinmorlan.com/posts/docker_clion_development/
 RUN ( \
     echo "LogLevel DEBUG2"; \
     echo "PermitRootLogin yes"; \
     echo "PasswordAuthentication yes"; \
-    echo "Port ${VM_SSH_SERVER_PORT}"; \
+    echo "Port ${SSH_SERVER_PORT}"; \
     echo "Subsystem sftp /usr/lib/openssh/sftp-server"; \
-  ) > /etc/ssh/sshd_config_dockerized_snow_openssh_server \
+  ) > /etc/ssh/sshd_config_ros4percept3d_openssh_server \
   && mkdir /run/sshd
 
 # SSH login fix. Otherwise user is kicked off after login
