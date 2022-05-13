@@ -17,7 +17,7 @@ Maintainer: luc.coupal.1@ulaval.ca
   - percep3d_turtle_exercises
 - Fetch ros bag `husky_short_demo.bag`
 - Build a catkin workspace 
-- A configured ssh server for remote VM access
+- Configure an ssh server for remote VM access
 
 #### Script usage:
 1. In the VM, execute the following line in a terminal
@@ -30,7 +30,7 @@ Maintainer: luc.coupal.1@ulaval.ca
       && sudo bash install_percept3d.bash
    ```
 2. logout current user and login with user `student` pass `percept3d`
-3. ★ Be advise that VM root password as also been change to `percept3d`
+3. ★ Be advise that VM root password has also been change to `percept3d`
 
 #### To connect remotely to the VM:
 1. first in the VM, open a terminal and execute 
@@ -48,7 +48,12 @@ Maintainer: luc.coupal.1@ulaval.ca
    ```
 
 
-**Note on unit test on aarch arm64**: `docker pull --platform linux/arm64 ubuntu:20.04`
+#### Note on unit-test execution on aarch arm64 (Apple M1 chips): 
+```shell
+docker pull --platform linux/arm64 ubuntu:20.04
+docker build --platform linux/arm64 -f Dockerfile -t test-percept3d4vm-ubuntu:20.04 . 
+docker run -a --name iAmTestROSmelodic4vmContainer -t -i test-percept3d4vm-ubuntu:20.04 
+```
 
 ## ROS-4-Percept3D in Docker (In progress)
 Build either 
