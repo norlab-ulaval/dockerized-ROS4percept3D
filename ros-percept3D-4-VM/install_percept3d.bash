@@ -10,9 +10,10 @@
 #       $ cd dockerized-ROS4percept3D/ros-percept3D-4-VM
 #       $ sudo bash install_percept3d.bash
 #   2. logout current user and login with user `student` pass `percept3d`
-#   Note: be advise that VM root password is now also `percept3d`
+#
+#   (!) Be advise that VM root password as also been change to `percept3d`
 
-# Note or unit test | docker pull --platform linux/arm64 ubuntu:20.04
+# Note on unit test | docker pull --platform linux/arm64 ubuntu:20.04
 
 ROS_PKG='desktop_full'
 #ROS_DISTRO='melodic'
