@@ -18,20 +18,19 @@ Install ROS version Noetic
 2. logout current user and login with user `student` pass `percept3d`
 
 To connect remotely to the container:
-```shell
-# Find the VM_IP_ADDRESS using 
-hostname -I | awk '{print $1}'
-
-# Secure shell
-ssh -p 2222 student@VM_IP_ADDRESS
-# ftp access
-sftp -P 2222 openssh-VM_IP_ADDRESS
-# copy file
-scp -P 2222 /path/to/foo student@VM_IP_ADDRESS:/dest/
-```
-
-[//]: # (ssh -p 2222 student@10.211.55.11)
-
+1. first in the VM, open a terminal and execute 
+   ```shell
+   # Find the VM_IP_ADDRESS using 
+   hostname -I | awk '{print $1}'
+   ```
+2. In the host computer, open a terminal and execute
+   ```shell
+   # Secure shell
+   ssh -p 2222 student@VM_IP_ADDRESS
+   
+   # or to copy file
+   scp -P 2222 /path/to/foo student@VM_IP_ADDRESS:/dest/
+   ```
 
 (!) Be advise that VM root password as also been change to `percept3d`
 
