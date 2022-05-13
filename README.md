@@ -30,16 +30,16 @@ sftp -P 2222 openssh-VM_IP_ADDRESS
 scp -P 2222 /path/to/foo student@VM_IP_ADDRESS:/dest/
 ```
 
-[//]: # ssh -p 2222 student@10.211.55.11
-[//]: # ssh -p 2222 student@10.37.129.1
+[//]: # (ssh -p 2222 student@10.211.55.11)
 
 
 (!) Be advise that VM root password as also been change to `percept3d`
 
-**Note on unit test**: `docker pull --platform linux/arm64 ubuntu:20.04`
+**Note on unit test on aarch arm64 **: `docker pull --platform linux/arm64 ubuntu:20.04`
 
-## ROS-4-Percept3D in Docker
+## ROS-4-Percept3D in Docker (In progress)
 Build either 
 - Ubuntu 20.04 (Focal) with ROS version Noetic
 - Ubuntu 18.04 (Bionic) with ROS version Melodic
-(In progress)
+
+
