@@ -15,6 +15,12 @@
 
 # Note on unit test | docker pull --platform linux/arm64 ubuntu:20.04
 
+#cd /opt \
+#  && sudo apt-get update && sudo apt-get install --assume-yes git \
+#  && sudo git clone https://github.com/norlab-ulaval/dockerized-ROS4percept3D.git \
+#  && cd dockerized-ROS4percept3D/ros-percept3D-4-VM \
+#  && sudo bash install_percept3d.bash
+
 ROS_PKG='desktop_full'
 #ROS_DISTRO='melodic'
 ROS_DISTRO='noetic'
