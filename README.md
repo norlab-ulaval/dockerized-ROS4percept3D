@@ -32,9 +32,9 @@ To connect remotely to the container:
    scp -P 2222 /path/to/foo student@VM_IP_ADDRESS:/dest/
    ```
 
-(!) Be advise that VM root password as also been change to `percept3d`
+Be advise that VM root password as also been change to `percept3d`
 
-**Note on unit test on aarch arm64 **: `docker pull --platform linux/arm64 ubuntu:20.04`
+**Note on unit test on aarch arm64**: `docker pull --platform linux/arm64 ubuntu:20.04`
 
 ## ROS-4-Percept3D in Docker (In progress)
 Build either 
