@@ -6,16 +6,16 @@ Maintainer: luc.coupal.1@ulaval.ca
 - os Ubuntu 20.04 (Focal)
 
 #### Script will install: 
-- ROS version: Noetic
-- `libpointmatcher` (latest) + dependencies (boost, eigen, ANN, FLANN, libnabo)
-- Required repository for the _Perception3D_ course: 
+- Install ROS version: Noetic
+- Install `libpointmatcher` (latest) + dependencies (boost, eigen, ANN, FLANN, libnabo)
+- Configure the required directory structure for the course
+- Add user `student` with proper privilege
+- Fetch the required repository for the _Perception3D_ course and install: 
+  - libpointmatcher_ros
   - norlab_icp_mapper
   - norlab_icp_mapper_ros
-  - libpointmatcher_ros
   - percep3d_turtle_exercises
-- A builded catkin workspace 
-- The course required directory structure
-- The user `student` with proper privilege
+- Build a catkin workspace 
 - A configured ssh server for remote VM access
 
 #### Script usage:
@@ -31,7 +31,7 @@ Maintainer: luc.coupal.1@ulaval.ca
 2. logout current user and login with user `student` pass `percept3d`
 3. ★ Be advise that VM root password as also been change to `percept3d`
 
-#### To connect remotely to the container:
+#### To connect remotely to the VM:
 1. first in the VM, open a terminal and execute 
    ```shell
    # Find the VM_IP_ADDRESS using 
