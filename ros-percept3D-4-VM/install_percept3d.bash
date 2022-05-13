@@ -66,11 +66,15 @@ cp "./percep3d_mapping.zip" "${ROS_DEV_WORKSPACE}/src"
 cd "${ROS_DEV_WORKSPACE}/src"
 unzip beginner_tutorials.zip
 unzip percep3d_mapping.zip
+rm beginner_tutorials.zip
+rm percep3d_mapping.zip
 
 
-# (NICE TO HAVE) ToDo: add fetch ros bag step (zip file is to big for GitHub)
-#wget https://ulavaldti-my.sharepoint.com/:u:/g/personal/dobar35_ulaval_ca/EcdX-qoboOBGnydmV8pnxAwBUw1bzFH_ACiCbIXKU2alCg?e=MRRoAb
-# husky_short_demo.zip
+# Fetch ros bag `husky_short_demo.bag`
+cd "${D4P3D_USER_HOME}/percep3d_data"
+wget -O husky_short_demo.zip https://ulavaldti-my.sharepoint.com/:u:/g/personal/dobar35_ulaval_ca/EcdX-qoboOBGnydmV8pnxAwBUw1bzFH_ACiCbIXKU2alCg?download=1
+unzip husky_short_demo.zip
+rm husky_short_demo.zip
 
 
 # ==== Install tools ===================================================================================================
