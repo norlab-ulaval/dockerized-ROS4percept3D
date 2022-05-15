@@ -113,7 +113,7 @@ sudo apt-get update \
   echo "# Turn off hardware acceleration. Workaround for Mesa graphics drivers problem when running from a VM"; \
   echo "# ref: https://wiki.ros.org/rviz/Troubleshooting"; \
   echo "export LIBGL_ALWAYS_SOFTWARE=1"; \
-)  >> ~/.bashrc
+)  >> ${D4P3D_USER_HOME}/.bashrc
 
 
 
@@ -318,7 +318,6 @@ source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 
 echo "source ${DS_ROS_ROOT}/setup.bash" >> ~/.bashrc
 echo "source ${ROS_DEV_WORKSPACE}/devel/setup.bash" >> ~/.bashrc
-
 echo "source ${DS_ROS_ROOT}/setup.bash" >> "${D4P3D_USER_HOME}/.bashrc"
 echo "source ${ROS_DEV_WORKSPACE}/devel/setup.bash" >> "${D4P3D_USER_HOME}/.bashrc"
 # Make sure your workspace is properly overlayed by the setup script by checking the ROS_PACKAGE_PATH environment
