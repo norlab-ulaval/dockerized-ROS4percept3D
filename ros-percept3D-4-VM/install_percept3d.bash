@@ -83,7 +83,7 @@ cd "${ROS_DEV_WORKSPACE}"
 # skip GUI dialog by setting everything to default
 export DEBIAN_FRONTEND=noninteractive
 
-# ... install development utilities .....................................................................
+# ... install development utilities ....................................................................................
 sudo apt-get update \
     && sudo apt-get install --assume-yes \
         lsb-release \
@@ -103,11 +103,25 @@ sudo apt-get update \
     && sudo rm -rf /var/lib/apt/lists/*
 
 
+# .... hardware acceleration in VM .....................................................................................
+sudo apt-get update \
+    && sudo apt-get install --assume-yes \
+        mesa-utils \
+    && sudo rm -rf /var/lib/apt/lists/*
+
+( \
+  echo "# Turn off hardware acceleration. Workaround for Mesa graphics drivers problem when running from a VM"; \
+  echo "# ref: https://wiki.ros.org/rviz/Troubleshooting"; \
+  echo "export LIBGL_ALWAYS_SOFTWARE=1"; \
+)  >> ~/.bashrc
+
+
+
 # ===Service: ssh server================================================================================================
 
 # install development utilities
 sudo apt-get update \
-    && sudo apt-get install --assume-yes --no-install-recommends \
+    && sudo apt-get install --assume-yes  \
         openssh-server \
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/*
@@ -131,14 +145,16 @@ VM_SSH_SERVER_PORT=2222
 sudo service ssh --full-restart
 
 
+# ==== Install percept3D libraries and dependencies ====================================================================
 
-# .... Install percept3D libraries dependencies ........................................................................
+# .... Dependencies ....................................................................................................
 if [[ ${ROS_DISTRO} == 'melodic' ]]; then
     sudo apt-get update \
         && sudo apt-get install --assume-yes \
             python-dev \
             python-opengl \
             python-numpy \
+            python-pip \
         && sudo rm -rf /var/lib/apt/lists/*;
 else
     sudo apt-get update \
@@ -146,6 +162,7 @@ else
             python3-dev \
             python3-opengl \
             python3-numpy \
+            python3-pip \
         && sudo rm -rf /var/lib/apt/lists/*;
 fi
 
@@ -195,7 +212,7 @@ cd "${PERCEPT_LIBRARIES}"
 git clone https://github.com/ethz-asl/libnabo.git \
     && cd libnabo \
     && mkdir build && cd build \
-    && cmake -D CMAKE_BUILD_TYPE=Release .. \
+    && cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo .. \
     && make -j $(nproc) \
     && make test \
     && sudo make install
@@ -217,7 +234,7 @@ sudo apt-get update \
 git clone https://github.com/ethz-asl/libpointmatcher.git \
     && cd libpointmatcher \
     && mkdir build && cd build \
-    && cmake -D CMAKE_BUILD_TYPE=Release \
+    && cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo \
             -D BUILD_TESTS=TRUE \
              .. \
     && make -j $(nproc) \
@@ -336,7 +353,13 @@ source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 
 
 ## .... install Paraview ................................................................................................
-#FROM ros-base-image AS ROS4percept3DwParaView
+sudo apt-get update \
+    && sudo apt-get install --assume-yes \
+        paraview \
+    && sudo rm -rf /var/lib/apt/lists/*
+
+
+
 #
 ## https://www.paraview.org
 #sudo apt-get update \
@@ -397,6 +420,8 @@ source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 # Make sure that you have your environment properly setup. A good way to check is to ensure that environment variables
 # like ROS_ROOT and ROS_PACKAGE_PATH are set:
 #   $ printenv | grep ROS
+printenv | grep ROS
+
 cd "${ROS_DEV_WORKSPACE}"
 
 # Change directory ownership
