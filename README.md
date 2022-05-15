@@ -17,6 +17,7 @@ Maintainer: luc.coupal.1@ulaval.ca
   - percep3d_turtle_exercises
 - Fetch ros bag `husky_short_demo.bag`
 - Build a catkin workspace 
+- Workaround for rviz hardware acceleration problem in VM 
 - Configure an ssh server for remote VM access
 
 #### Script usage:
