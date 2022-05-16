@@ -148,8 +148,6 @@ sudo service ssh --full-restart
 # ==== Install percept3D libraries and dependencies ====================================================================
 
 # .... Dependencies ....................................................................................................
-## Required dependencies for tutorial: Introduction to tf
-## https://wiki.ros.org/tf/Tutorials/Introduction%20to%20tf
 #sudo apt-get update \
 #    && sudo apt-get install --assume-yes \
 #        python-dev \
@@ -163,7 +161,8 @@ if [[ ${ROS_DISTRO} == 'melodic' ]]; then
             python-numpy \
         && sudo rm -rf /var/lib/apt/lists/*;
 
-    # work around to install pip in python2
+    # Required dependencies for tutorial: Introduction to tf https://wiki.ros.org/tf/Tutorials/Introduction%20to%20tf
+    # Work around to install pip in python2
     curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
     sudo python2 get-pip.py
     python2 -m  pip install --no-cache-dir --verbose \
@@ -343,9 +342,6 @@ echo "source ${ROS_DEV_WORKSPACE}/devel/setup.bash" >> "${D4P3D_USER_HOME}/.bash
 #   > /home/youruser/ros_catkin_ws/src:/opt/ros/melodic/share
 
 
-
-
-
 ## . . Pull required repository. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 cd "${ROS_DEV_WORKSPACE}/src/"
 git clone https://github.com/norlab-ulaval/norlab_icp_mapper_ros.git
@@ -368,6 +364,15 @@ source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 ## Already install in ROS desktop full install
 #sudo apt-get update \
 #    && sudo apt-get install -y rviz
+
+# Required dependencies for tutorial: Introduction to tf https://wiki.ros.org/tf/Tutorials/Introduction%20to%20tf
+# Note: tf is deprecated in favor of tf2 ››› Install tf2 for tutorial in exo module 2.4
+sudo apt-get update \
+    && sudo apt-get install --assume-yes \
+          ros-${ROS_DISTRO}-turtle-tf2 \
+          ros-${ROS_DISTRO}-tf2-tools \
+          ros-${ROS_DISTRO}-tf \
+    && sudo rm -rf /var/lib/apt/lists/*
 
 
 # .... install Paraview ................................................................................................
