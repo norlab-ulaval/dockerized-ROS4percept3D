@@ -13,7 +13,10 @@
 #
 #   (!) Be advise that VM root password as also been change to `percept3d`
 
-# Note on unit test | docker pull --platform linux/arm64 ubuntu:20.04
+# Note on unit test:
+#    $ docker pull --platform linux/arm64 ubuntu:20.04
+#    $ docker build --platform linux/arm64 -f Dockerfile -t test-percept3d4vm-ubuntu:20.04 .
+#    $ docker run -a --name iAmTestROSmelodic4vmContainer -t -i test-percept3d4vm-ubuntu:20.04
 
 ROS_PKG='desktop_full'
 #ROS_DISTRO='melodic'
