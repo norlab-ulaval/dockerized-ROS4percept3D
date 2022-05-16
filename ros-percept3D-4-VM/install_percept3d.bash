@@ -148,14 +148,26 @@ sudo service ssh --full-restart
 # ==== Install percept3D libraries and dependencies ====================================================================
 
 # .... Dependencies ....................................................................................................
+## Required dependencies for tutorial: Introduction to tf
+## https://wiki.ros.org/tf/Tutorials/Introduction%20to%20tf
+#sudo apt-get update \
+#    && sudo apt-get install --assume-yes \
+#        python-dev \
+#    && sudo rm -rf /var/lib/apt/lists/*;
+
 if [[ ${ROS_DISTRO} == 'melodic' ]]; then
     sudo apt-get update \
         && sudo apt-get install --assume-yes \
             python-dev \
             python-opengl \
             python-numpy \
-            python-pip \
         && sudo rm -rf /var/lib/apt/lists/*;
+
+    # work around to install pip in python2
+    curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
+    sudo python2 get-pip.py
+    python2 -m  pip install --no-cache-dir --verbose \
+        pyyaml
 else
     sudo apt-get update \
         && sudo apt-get install --assume-yes \
@@ -163,8 +175,13 @@ else
             python3-opengl \
             python3-numpy \
             python3-pip \
+            python-is-python3 \
         && sudo rm -rf /var/lib/apt/lists/*;
+
+    python3 -m pip install --upgrade pip
 fi
+
+
 
 
 
@@ -301,10 +318,10 @@ else
         && sudo rosdep init;
 fi
 
+
 rosdep update
 sudo rosdep fix-permissions
 
-#        ros-${ROS_DISTRO}-`echo "${ROS_PKG}" | tr '_' '-'` \
 
 # . . Install ROS & build catkin workspace. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 cd "${ROS_DEV_WORKSPACE}"
@@ -324,6 +341,8 @@ echo "source ${ROS_DEV_WORKSPACE}/devel/setup.bash" >> "${D4P3D_USER_HOME}/.bash
 # variable. It should include the directory you're in:
 #   $ echo $ROS_PACKAGE_PATH
 #   > /home/youruser/ros_catkin_ws/src:/opt/ros/melodic/share
+
+
 
 
 
@@ -351,7 +370,7 @@ source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 #    && sudo apt-get install -y rviz
 
 
-## .... install Paraview ................................................................................................
+# .... install Paraview ................................................................................................
 sudo apt-get update \
     && sudo apt-get install --assume-yes \
         paraview \
