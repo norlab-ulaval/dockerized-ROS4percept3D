@@ -17,8 +17,11 @@ Maintainer: luc.coupal.1@ulaval.ca
   - percep3d_turtle_exercises
 - Fetch ros bag `husky_short_demo.bag`
 - Build a catkin workspace 
-- Workaround for rviz hardware acceleration problem in VM 
 - Configure an ssh server for remote VM access
+- Workaround for rviz hardware acceleration problem in VM 
+- Workaround for running legacy python2 ROS tutorial in python3 
+- Install Paraview
+
 
 #### Script usage:
 1. In the VM, execute the following line in a terminal

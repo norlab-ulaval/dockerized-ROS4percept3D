@@ -148,10 +148,6 @@ sudo service ssh --full-restart
 # ==== Install percept3D libraries and dependencies ====================================================================
 
 # .... Dependencies ....................................................................................................
-#sudo apt-get update \
-#    && sudo apt-get install --assume-yes \
-#        python-dev \
-#    && sudo rm -rf /var/lib/apt/lists/*;
 
 if [[ ${ROS_DISTRO} == 'melodic' ]]; then
     sudo apt-get update \
@@ -271,9 +267,6 @@ git clone https://github.com/norlab-ulaval/norlab_icp_mapper.git \
     && sudo make install
 
 
-# ToDo:on task end >> next bloc ↓↓
-#pwd && tree -L 3
-
 # === ROS ==============================================================================================================
 
 # ... register the ROS package source ..................................................................................
@@ -360,10 +353,6 @@ source "${DS_ROS_ROOT}/setup.bash"
 catkin_make
 source "${ROS_DEV_WORKSPACE}/devel/setup.bash"
 
-
-## Already install in ROS desktop full install
-#sudo apt-get update \
-#    && sudo apt-get install -y rviz
 
 # Required dependencies for tutorial: Introduction to tf https://wiki.ros.org/tf/Tutorials/Introduction%20to%20tf
 # Note: tf is deprecated in favor of tf2 ››› Install tf2 for tutorial in exo module 2.4
