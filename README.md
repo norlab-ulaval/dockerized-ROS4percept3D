@@ -34,7 +34,7 @@ Maintainer: luc.coupal.1@ulaval.ca
       && sudo bash install_percept3d.bash
    ```
 2. logout current user and login with user `student` pass `percept3d`
-3. ★ Be advise that VM root password has also been change to `percept3d`
+
 
 #### To connect remotely to the VM:
 1. first in the VM, open a terminal and execute 

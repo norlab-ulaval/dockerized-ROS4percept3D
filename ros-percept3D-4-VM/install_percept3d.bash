@@ -38,9 +38,13 @@ sudo usermod -a -G sudo "${D4P3D_USER}"
 # (not a problem on norlab-og but mandatory on Jetson device)
 # Ref: https://forums.developer.nvidia.com/t/how-to-properly-create-new-users/68660/2
 
-# ... root config ......................................................................................................
-# user:newpassword
-sudo echo "root:"${PASSWORD}"" | chpasswd
+## ... root config ......................................................................................................
+## (CRITICAL) ToDo:validate >> next bloc ↓↓
+##    - Related to readme point › 3. ★ Be advise that VM root password has also been change to `percept3d`
+##    - Configuring root is relevant for the Docker container version, but not sure it is for the shell script version.
+##           Could potentially cause problem if someone execute the script my mistake in the host machine.
+##    - Note on syntax › user:newpassword
+#sudo echo "root:"${PASSWORD}"" | chpasswd
 
 
 # .... Create required dir structure ...................................................................................
@@ -312,7 +316,6 @@ else
             python3-rosinstall \
         && sudo rosdep init;
 fi
-
 
 rosdep update
 sudo rosdep fix-permissions
