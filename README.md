@@ -3,10 +3,10 @@ Maintainer: luc.coupal.1@ulaval.ca
 
 ## ROS-4-Percept3D for virtual machine
 #### Requirement
-- os Ubuntu 20.04 (Focal)
+- os Ubuntu 18.04 (Bionic)
 
 #### Script will install: 
-- Install ROS version: Noetic
+- Install ROS version: melodic
 - Install `libpointmatcher` (latest) + dependencies (boost, eigen, ANN, FLANN, libnabo)
 - Configure the required directory structure for the course
 - Add user `student` with proper privilege
