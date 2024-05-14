@@ -79,7 +79,7 @@ rm percep3d_mapping.zip
 
 # Fetch ros bag `husky_short_demo.bag`
 cd "${D4P3D_USER_HOME}/percep3d_data"
-wget -O husky_short_demo.zip http://norlab.s3.valeria.science/percep3d/husky_short_demo.zip?AWSAccessKeyId=XMBLP3A0338XN5LASKV2&Expires=2319980812&Signature=n5HiUTunG7tcTINJovxH%2FtnGbM4%3D
+wget -O husky_short_demo.zip "http://norlab.s3.valeria.science/percep3d/husky_short_demo.zip?AWSAccessKeyId=XMBLP3A0338XN5LASKV2&Expires=2319980812&Signature=n5HiUTunG7tcTINJovxH%2FtnGbM4%3D"
 unzip husky_short_demo.zip
 rm husky_short_demo.zip
 
