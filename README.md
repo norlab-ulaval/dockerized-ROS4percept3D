@@ -44,7 +44,7 @@ machines, including all necessary dependencies and configurations for robotics p
 
 [//]: # (NorLab teamcity)
 [//]: # (TODO: Un-comment the next line if your repository has run configuration enable on the norlab-teamcity-server)
-[//]: # (<a href="http://132.203.26.125:8111"><img src="https://img.shields.io/static/v1?label=JetBrains TeamCity&message=CI/CD&color=green?style=plastic&logo=teamcity" /></a>)
+[//]: # (<a href="http://132.203.26.125:8111"><img alt="Static Badge" src="https://img.shields.io/badge/JetBrains%20TeamCity-CI-green?style=plastic&logo=teamcity"></a>)
 
 [//]: # (Dockerhub image badge)
 [//]: # (TODO: Un-comment the next line if you have docker images on dockerhub)

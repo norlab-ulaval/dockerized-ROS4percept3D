@@ -279,7 +279,7 @@ git clone --recurse-submodules https://github.com/norlab-ulaval/libpointmatcher.
 cd libpointmatcher
 
 if [[ ${DISTRIB_RELEASE} == '20.04' ]]; then
-  # Quick-hack to get the proper get-pip.py version for noetic
+  # Quick-hack to get the proper get-pip.py version for focal
   FILE_TO_CHANGE="${PERCEPT_LIBRARIES_PATH}/libpointmatcher/build_system/ubuntu/lpm_install_dependencies_general_ubuntu.bash"
   SEEK_STR="wget https://bootstrap.pypa.io/get-pip.py"
   CHANGE_TO="wget https://bootstrap.pypa.io/pip/3.8/get-pip.py"
